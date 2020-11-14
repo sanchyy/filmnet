@@ -1,12 +1,24 @@
 const express = require('express');
-const emojis  = require('./emojis');
+const films = require('./films');
+const F = require('./models/films.js'); 
+
 
 const router = express.Router();
 
+//get all films
 router.get('/', (req, res) => {
-  res.json({
-    message: 'FilmNet - API v1.0'
-  });
+    F.find({}, (err, movies)=> {
+        let response = {}; 
+        movies.forEach((movie)=> {
+            response[movie.title]=movie;
+        });
+    });
+    res.send(response);
+});
+
+//guardar peli
+router.post('/', (req, res) => {
+    
 });
 
 router.use('/emojis', emojis);
