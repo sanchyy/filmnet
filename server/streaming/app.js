@@ -2,6 +2,7 @@ const NodeMediaServer = require('node-media-server');
 const express = require('express');
 const path = require('path');
 const { exec } = require('child_process');
+const { send } = require('process');
 
 const config = {
     rtmp: {
@@ -13,7 +14,7 @@ const config = {
     },
     http: {
       port: 8000,
-      mediaroot: './output',
+      mediaroot: './media',
       allow_origin: '*'
     },
     trans: {
@@ -47,21 +48,6 @@ app.get('/movie/:id', function(req, res){
     let command = "ffmpeg -re -i videos/" + nom + " -c:v libx264 -preset veryfast -tune zerolatency -c:a aac -ar 44100 -f flv rtmp://localhost/live/"+nom;
     console.log(command);
     exec(command);
-    //exec('ffmpeg -re -i Nature.flv  -c:v libx264 -preset veryfast -tune zerolatency -c:a aac -ar 44100 -f flv rtmp://localhost/live/video.flv');
-    //let ffmpeg = spawn("ffmpeg", [" -re -i ./Nature.flv -c:v libx264 -preset veryfast -tune zerolatency -c:a aac -ar 44100 -f flv rtmp://localhost/live/video.flv"]);
-    /*ffmpeg.stdout.on("data", data => {
-      console.log(`stdout: ${data}`);
-    });
-  
-    ffmpeg.stderr.on("data", data => {
-      console.log(`stderr: ${data}`);
-    });
-    ffmpeg.on("error", (error)=>{
-      console.log(`error message ffmpeg: ${error.message}`);
-    })
-    ffmpeg.on("exit", function(code){
-      console.log("ffmpeg exit code:" + code);
-    })*/
     console.log("executat correctament");  
   } 
   catch (err){
@@ -72,8 +58,14 @@ app.get('/movie/:id', function(req, res){
   console.log(ruta);
   let vlc = spawn("vlc", [ruta]);
   vlc.on("exit", function(code){
-    console.log("Exit code: "+ code);
-  })
+  console.log("Exit code: "+ code);
+})
+  res.redirect('/movies?id='+nom);
+  console.log(__dirname);
+});
+
+app.get('/movies/',(req,res)=>{
+  res.sendFile(path.join(__dirname, '/pelis.html')); 
 });
 
 
