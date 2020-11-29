@@ -1,6 +1,8 @@
 # USAGE
 `clone repo
+
  npm i //to install packages for node-media-server (nms)
+ 
  node app.js` //to start server 
 
 ##  ./videos directory
