@@ -1,9 +1,7 @@
 # USAGE
-`clone repo
-
+ clone repo
  npm i //to install packages for node-media-server (nms)
- 
- node app.js` //to start server 
+ node app.js //to start server 
 
 ##  ./videos directory
 Creat una carpeta **videos** i afegeix els videos .flv que vulguis streamejar.
