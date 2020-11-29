@@ -15,15 +15,23 @@ app.use(helmet());
 app.use(cors());
 app.use(express.json());
 
+// Routes
 app.get('/', (req, res) => {
   res.json({
     message: 'FilMnet🦄🌈✨👋🌎🌍🌏✨🌈🦄'
   });
 });
-
 app.use('/api/v1', api);
 
 app.use(middlewares.notFound);
 app.use(middlewares.errorHandler);
+
+// Errors
+app.use(middlewares.notFound);
+app.use(middlewares.errorHandler);
+app.use(middlewares.enoent);
+app.use(middlewares.eexist);
+app.use(middlewares.err);
+
 
 module.exports = app;

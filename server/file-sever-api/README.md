@@ -24,6 +24,19 @@ Development utilities:
 
 ```
 npm install
+
+```
+> modify your `.env` file and add this variables, for example:  
+```
+NODE_ENV=development
+MONGO_URI=localhost/filmnet
+PATH_TO_DIR=/home/user/filmnet/movies/
+```
+
+## Development
+
+```
+npm run dev
 ```
 
 ## Lint
@@ -38,8 +51,5 @@ npm run lint
 npm run test
 ```
 
-## Development
 
-```
-npm run dev
-```
+

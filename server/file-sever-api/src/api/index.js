@@ -1,26 +1,81 @@
-const express = require('express');
-const films = require('./films');
-const F = require('./models/films.js'); 
+const router = require('express').Router();
+const fs = require('fs');
+const fileUpload = require('express-fileupload');
+const moveFile = require('../utils');
+const monk = require('monk')
+const Joi   = require('@hapi/joi')
+const path = require('path');
 
+const dirPath = process.env.PATH_TO_DIR
+console.log("File path:", dirPath);
+const db = monk(process.env.MONGO_URI);
+console.log("MONGO_URI:", process.env.MONGO_URI);
+const movies = db.get('movies');
 
-const router = express.Router();
+router.use(fileUpload());
 
-//get all films
-router.get('/', (req, res) => {
-    F.find({}, (err, movies)=> {
-        let response = {}; 
-        movies.forEach((movie)=> {
-            response[movie.title]=movie;
-        });
+var Film = Joi.object({
+  title: Joi.string().trim().required(),
+  url: Joi.string().trim().uri().required(),
+  image: Joi.required()
+}); 
+
+//GET CONTENT
+router.get('/content', async (req, res, next) => {
+  try {
+    const items = await movies.find({});
+    res.json(items);
+  }
+  catch (err) {
+    next(err);
+  }
+});
+
+//UPLOAD MOVIE
+router.post('/upload', async (req, res, next) => {
+  if (!req.files) {
+    return res.status(400).json({
+      success: false,
+      message: 'No files were uploaded'
     });
-    res.send(response);
-});
+  }
+  let movie = req.files.film;
 
-//guardar peli
-router.post('/', (req, res) => {
-    
-});
+  const request = {
+    title: req.body.title,
+    url: "http://localhost:7000/movie/" + movie.name + '.flv',
+    image: req.files.image
+  }
 
-router.use('/emojis', emojis);
+  try {
+    await moveFile(movie, dirPath);
+  }
+  catch (err) {
+    // Sys error
+    if (err.code) {
+      return next(err);
+    }
+
+    return res.status(400).json({
+      success: false,
+      message: err.message,
+      path: path.join(dirPath, movie.name)
+    });
+  }
+  try{
+    const value = await Film.ValidateAsync(request);
+    const inserted = await movies.insert(value);
+    res.json(inserted);
+  }
+  catch (err) {
+    next(err);
+  }
+
+  res.json({
+    success: true,
+    message: 'Files successfully uploaded',
+    path: dirPath.relativePath
+  });
+});
 
 module.exports = router;
