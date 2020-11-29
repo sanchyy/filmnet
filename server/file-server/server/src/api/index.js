@@ -43,7 +43,7 @@ router.post('/upload', async (req, res, next) => {
 
   const request = {
     title: req.body.title,
-    url: "http://localhost:7000/movie/" + movie.name;
+    url: "http://localhost:7000/movie/" + movie.name,
     image: req.files.image
   }
 
