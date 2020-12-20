@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+    <div id="listaImagenes"></div>
+    <script> 
+
+        function display(m) {
+            let img = '<img src=' + m.image + '/>';
+            let url = ''
+        }
+
+        window.onload = async() => {
+        const url = "http://localhost:8080/api/v1/content";
+        const res = await fetch(url, {method: 'GET'});
+        var data = JSON.parse(await res.text())
+        
+        data.forEach((movie) => {
+            document.getElementById('listaImagenes').innerHTML += display(JSON.parse(movie));
+        })
+        console.log(data)
+        document.getElementById('listaImagenes').innerHTML = await response.text();
+        }
+    </script>
+</body>
+</html>
