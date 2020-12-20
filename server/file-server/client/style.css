@@ -1,5 +1,7 @@
 @import url("https://use.fontawesome.com/releases/v5.2.0/css/all.css");
 body {
+    height: 100%;
+    width: 100%;
     margin: 0;
     font: 1rem/1.5 "PT Sans", Arial, sans-serif;
     color: #5a5a5a;
@@ -80,4 +82,40 @@ form {
 
 .formstyle>* {
     margin: 1rem;
+}
+
+.listImages {
+    margin: 4rem;
+}
+
+.grid-container {
+    display: flex;
+    flex-wrap: wrap;
+    padding: 0 4px;
+}
+
+.grid-item {
+    flex: 25%;
+    max-width: 25%;
+    padding: 0 4px;
+}
+
+.grid-item img {
+    margin-top: 8px;
+    width: 100%;
+    padding: 10px;
+}
+
+@media screen and (max-width: 800px) {
+    .grid-item {
+        flex: 50%;
+        max-width: 50%;
+    }
+}
+
+@media screen and (max-width: 600px) {
+    .grid-item {
+        flex: 100%;
+        max-width: 100%;
+    }
 }
