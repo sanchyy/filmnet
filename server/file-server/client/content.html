@@ -7,6 +7,7 @@
     <title>Document</title>
     <link rel="stylesheet" href="./style.css">
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+    <link rel="icon" href="FilmNetLogo.PNG">
 </head>
 
 <body>
@@ -28,10 +29,12 @@
             let $item = $("<div></div>").addClass("grid-item");
             let $img = $("<img/>").attr("src", "data:image/jpeg;base64, " + m.image.data);
             let $url = $("<a/>").attr("href", m.url).append($img);
-            return $item.append($url);
+            let $row = $("<div></div>").addClass("row").append($("<h3></h3>").append("Title: " + m.title));
+
+            return $item.append($url).append($row);
         }
         window.onload = async() => {
-            const url = "http://localhost:8080/api/v1/content";
+            const url = "http://192.168.0.45:8080/api/v1/content";
             const res = await fetch(url, {
                 method: 'GET'
             });
