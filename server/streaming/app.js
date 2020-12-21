@@ -59,14 +59,14 @@ app.get('/movie/:id', function(req, res){
   }
   nomv = nom.substring(0, nom.length - 4);
   console.log('intento obrir vlc');
-  let ruta = "http://localhost:8000/live/"+nomf+"/index.mpd";
+  let ruta = "http://192.168.0.46:8000/live/"+nomf+"/index.mpd";
   console.log(ruta);
-  setTimeout(() => { let vlc = spawn("vlc", [ruta]); }, 20000);
+  setTimeout(() => { let vlc = spawn("vlc", [ruta]); }, 5000);
  // let vlc = spawn("vlc", [ruta]);
  //vlc.on("exit", function(code){
  //console.log("Exit code: "+ code);
 //})
-  setTimeout(() => {   res.redirect('/movies?id='+nomf); }, 20000);
+  setTimeout(() => {   res.redirect('/movies?id='+nomf); }, 5000);
   //res.redirect('/movies?id='+nomf);
   console.log(__dirname);
 });
