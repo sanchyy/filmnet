@@ -1,28 +1,67 @@
-<!DOCTYPE html>
+<!doctype html>
 <html>
-<head>
-    <title>Adaptive Streaming in HTML5</title>
-    <style>
-        video {
-        width: 640px;
-        height: 360px;
-        }
-    </style>
-</head>
-<body>
-    <div>
-        <h1>Adaptive Streaming with HTML5</h1>
-        <video id="videoPlayer" controls></video>
-    <div>
-    <script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.3/jquery.min.js"></script>    
-    <!-- DASH-AVC/265 reference implementation -->
-    <script src="https://cdn.dashjs.org/latest/dash.all.min.js"></script>
-    <script>
+    <head>
+        <title>Filmnet</title>
+        <style>
+            video {
+                width: 100%;
+                height: 100%;
+            }
+        </style>
+    </head>
+    <body>
+        <div>
+            <video autoplay="" id="videoPlayer" controls="" autoplay></video>
+        </div>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/dashjs/3.0.2/dash.all.min.js"></script>
+
+        <script>
             (function(){
-                var url = "http://localhost:8000/live/video/index.mpd";
+                // var url = "https://dash.akamaized.net/envivio/EnvivioDash3/manifest.mpd";
+                var filmName = document.URL.split('=').pop();
+
+                console.log("nom del film" + filmName);
+                var url = "http://192.168.0.46:8000/live/"+filmName+"/index.mpd";
+                
                 var player = dashjs.MediaPlayer().create();
+
+                // config
+                targetLatency = 2.0;        // Lowering this value will lower latency but may decrease the player's ability to build a stable buffer.
+                minDrift = 0.05;            // Minimum latency deviation allowed before activating catch-up mechanism.
+                catchupPlaybackRate = 0.5;  // Maximum catch-up rate, as a percentage, for low latency live streams.
+                stableBuffer = 2;           // The time that the internal buffer target will be set to post startup/seeks (NOT top quality).
+                bufferAtTopQuality = 2;     // The time that the internal buffer target will be set to once playing the top quality.
+
+
+                player.updateSettings({
+                    'streaming': {
+                        'liveDelay': 2,
+                        'liveCatchUpMinDrift': 0.05,
+                        'liveCatchUpPlaybackRate': 0.5,
+                        'stableBufferTime': 2,
+                        'bufferTimeAtTopQuality': 2,
+                        'bufferTimeAtTopQualityLongForm': 2,
+                        'bufferToKeep': 2,
+                        'bufferAheadToKeep': 2,
+                        'lowLatencyEnabled': true,
+                        'fastSwitchEnabled': true,
+                        'abr': {
+                            'limitBitrateByPortal': true
+                        },
+                    }
+                });
+
+                console.log(player.getSettings());
+
+                setInterval(() => {
+                  console.log('Live latency= ', player.getCurrentLiveLatency());
+                  console.log('Buffer length= ', player.getBufferLength('video'));
+                }, 3000);
+
                 player.initialize(document.querySelector("#videoPlayer"), url, true);
+
             })();
-    </script>
-</body>
+
+        </script>
+    </body>
 </html>

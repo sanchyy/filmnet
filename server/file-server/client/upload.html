@@ -4,7 +4,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Document</title>
+    <title>Film Net Upload</title>
     <link rel="stylesheet" href="./style.css">
     <link rel="icon" href="FilmNetLogo.PNG">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
@@ -51,7 +51,7 @@
         const formFilmnet = document.forms['formFilmnet'];
         formFilmnet.onsubmit = async(e) => {
             e.preventDefault();
-            const url = "http://localhost:8080/api/v1/upload";
+            const url = "http://192.168.0.45:8080/api/v1/upload";
             var data = new FormData(formFilmnet);
             //const filename = formFilmnet.file.files[0].name;
             //    data.append('filename',filename);

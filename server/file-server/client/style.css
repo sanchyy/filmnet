@@ -104,6 +104,8 @@ form {
     flex: 25%;
     max-width: 25%;
     background-color: #fcfcfc;
+    margin: 3rem;
+    max-width:20%;
 }
 
 div.grid-item:hover {
